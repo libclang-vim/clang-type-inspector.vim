@@ -1,7 +1,7 @@
 Inspect `auto` with Power of Clang
 ==================================
 
-This plugin inspects `auto` declarations declarations in your Vim.  You can know the type of `auto` declarations easily.
+This plugin inspects `auto` declarations in your Vim.  You can know the type of `auto` declarations easily.
 
 ![Screenshot](http://gifzo.net/BGqCKUIZ2OA.gif)
 
