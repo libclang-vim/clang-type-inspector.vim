@@ -1,4 +1,4 @@
-let g:clang_type_inspector#canonical_type = get(g:, 'clang_type_inspector#non_canonical_type', 1)
+let g:clang_type_inspector#canonical_type = get(g:, 'clang_type_inspector#canonical_type', 0)
 let g:clang_type_inspector#automatic_inspection = get(g:, 'clang_type_inspector#automatic_inspection', 1)
 let g:clang_type_inspector#disable_balloon = get(g:, 'clang_type_inspector#disable_balloon', 0)
 let g:clang_type_inspector#compiler_args = get(b:, 'clang_type_inspector#compiler_args', '-std=c++1y')
