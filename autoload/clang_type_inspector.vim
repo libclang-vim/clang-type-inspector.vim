@@ -30,7 +30,7 @@ function! clang_type_inspector#inspect_type_at(line, col, option)
         return ""
     endif
 
-    if g:clang_type_inspector#canonical_type == 1
+    if g:clang_type_inspector#canonical_type == 1 || type_info.type ==# type_info.canonical.type
         return type_info.canonical.type
     elseif g:clang_type_inspector#canonical_type == 2
         return printf('%s ( %s )', type_info.canonical.type, type_info.type)
