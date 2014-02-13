@@ -66,6 +66,10 @@ clang_type_inspector#inspect_type_at({line}, {col}, {option})
 
 `{option}` is a dictionary.  If `{option}` has `file` key,  its value specifies the file name of source.  If `{option}` has `bufnr` key, its value specifies the buffer number of source.  If both `file` and `bufnr` are not specified, the current buffer is used as the source to inspect.
 
+## Canonical Type
+
+If you want to know a canonical type, set `g:clang_type_inspector#canonical_type` to `1` (Default is `0`).  If you want to know both canonical and non-canonical types, set `g:clang_type_inspector#canonical_type` to `2`.
+
 ## License
 
     The MIT License (MIT)

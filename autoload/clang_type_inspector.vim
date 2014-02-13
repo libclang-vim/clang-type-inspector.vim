@@ -26,18 +26,16 @@ function! clang_type_inspector#inspect_type_at(line, col, option)
         endtry
     endif
 
-    if empty(type_info)
+    if empty(type_info) || ! has_key(type_info, 'type')
         return ""
     endif
 
-    if ! g:clang_type_inspector#canonical_type
-        if has_key(type_info, 'type')
-            return type_info.type
-        endif
+    if g:clang_type_inspector#canonical_type == 1
+        return type_info.canonical.type
+    elseif g:clang_type_inspector#canonical_type == 2
+        return printf('%s ( %s )', type_info.canonical.type, type_info.type)
     else
-        if has_key(type_info, 'canonical')
-            return type_info.canonical.type
-        endif
+        return type_info.type
     endif
     return ''
 endfunction
