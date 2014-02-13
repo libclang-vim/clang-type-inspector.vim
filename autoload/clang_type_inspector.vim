@@ -30,10 +30,15 @@ function! clang_type_inspector#inspect_type_at(line, col, option)
     endif
 
     if ! g:clang_type_inspector#canonical_type
-        return type_info.type
+        if has_key(type_info, 'type')
+            return type_info.type
+        endif
     else
-        return type_info.canonical.type
+        if has_key(type_info, 'canonical')
+            return type_info.canonical.type
+        endif
     endif
+    return ''
 endfunction
 
 function! clang_type_inspector#inspect_type_if_auto()
