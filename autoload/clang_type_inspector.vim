@@ -1,6 +1,7 @@
 let g:clang_type_inspector#canonical_type = get(g:, 'clang_type_inspector#non_canonical_type', 1)
 let g:clang_type_inspector#automatic_inspection = get(g:, 'clang_type_inspector#automatic_inspection', 1)
 let g:clang_type_inspector#disable_balloon = get(g:, 'clang_type_inspector#disable_balloon', 0)
+let g:clang_type_inspector#compiler_args = get(b:, 'clang_type_inspector#compiler_args', '-std=c++1y')
 
 let s:prev_pos = []
 
@@ -14,12 +15,12 @@ endfunction
 
 function! clang_type_inspector#inspect_type_at(line, col, option)
     if has_key(a:option, 'file')
-        let type_info = libclang#deduction#type_at(a:option.file, a:line, a:col)
+        let type_info = libclang#deduction#type_at(a:option.file, a:line, a:col, g:clang_type_inspector#compiler_args)
     else
         let bufnr = has_key(a:option, 'bufnr') ? a:option.bufnr : bufnr('%')
         let file_name = s:prepare_temp_file(bufnr)
         try
-            let type_info = libclang#deduction#type_at(file_name, a:line, a:col)
+            let type_info = libclang#deduction#type_at(file_name, a:line, a:col, g:clang_type_inspector#compiler_args)
         finally
             call delete(file_name)
         endtry
