@@ -70,6 +70,10 @@ clang_type_inspector#inspect_type_at({line}, {col}, {option})
 
 If you want to know a canonical type, set `g:clang_type_inspector#canonical_type` to `1` (Default is `0`).  If you want to know both canonical and non-canonical types, set `g:clang_type_inspector#canonical_type` to `2`.
 
+## Too Long Type Name Bothers You?
+
+Too long type name sometimes bothers you (e.g. expression templates).  You can specify the max length of type name by `g:clang_type_inspector#type_name_length_limit` (Default is `0` and it means no limit).
+
 ## License
 
     The MIT License (MIT)
