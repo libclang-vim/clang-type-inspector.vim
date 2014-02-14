@@ -4,8 +4,8 @@ set cpo&vim
 let g:clang_type_inspector#canonical_type = get(g:, 'clang_type_inspector#canonical_type', 0)
 let g:clang_type_inspector#automatic_inspection = get(g:, 'clang_type_inspector#automatic_inspection', 1)
 let g:clang_type_inspector#disable_balloon = get(g:, 'clang_type_inspector#disable_balloon', 0)
-let g:clang_type_inspector#type_name_length_limit = get(g:, 'clang_type_inspector#type_name_length_limit', 0)
 let g:clang_type_inspector#default_compiler_args = get(g:, 'clang_type_inspector#default_compiler_args', '-std=c++1y')
+let g:clang_type_inspector#shorten_too_long_type_name = get(g:, 'g:clang_type_inspector#shorten_too_long_type_name', 1)
 
 let s:prev_pos = []
 
@@ -47,6 +47,10 @@ function! clang_type_inspector#inspect_type_at(line, col, option)
     return ''
 endfunction
 
+function! s:shorten_for_oneline_output(output)
+    return a:output[:(&columns - 1) - 3] . '...'
+endfunction
+
 function! clang_type_inspector#inspect_type_if_auto()
     if expand('<cword>') !=# 'auto'
         let s:prev_pos = []
@@ -70,8 +74,8 @@ function! clang_type_inspector#inspect_type_if_auto()
 
     let name = clang_type_inspector#inspect_type_at(line('.'), col('.'), {})
 
-    if g:clang_type_inspector#type_name_length_limit > 0
-        let name = name[ : g:clang_type_inspector#type_name_length_limit - 1]
+    if g:clang_type_inspector#shorten_too_long_type_name && len(name) > &column
+        let name = s:shorten_for_oneline_output(name)
     endif
 
     echo name
@@ -88,7 +92,12 @@ function! clang_type_inspector#toggle_balloon()
 endfunction
 
 function! clang_type_inspector#balloon_expr()
-    return clang_type_inspector#inspect_type_at(v:beval_lnum, v:beval_col, {'bufnr' : v:beval_bufnr})
+    let name = clang_type_inspector#inspect_type_at(v:beval_lnum, v:beval_col, {'bufnr' : v:beval_bufnr})
+
+    if g:clang_type_inspector#shorten_too_long_type_name && len(name) > &column
+        let name = s:shorten_for_oneline_output(name)
+    endif
+    return name
 endfunction
 
 let &cpo = s:save_cpo
