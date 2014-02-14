@@ -64,15 +64,15 @@ clang_type_inspector#inspect_type_at({line}, {col}, {option})
 
 `{line}` and `{col}` is line and column of the source.
 
-`{option}` is a dictionary.  If `{option}` has `file` key,  its value specifies the file name of source.  If `{option}` has `bufnr` key, its value specifies the buffer number of source.  If both `file` and `bufnr` are not specified, the current buffer is used as the source to inspect.
+`{option}` is a dictionary.  If `{option}` has `file` key,  its value specifies the file name of source.  If `{option}` has `bufnr` key, its value specifies the buffer number of source.  If both `file` and `bufnr` are not specified, the current buffer is used as the source to inspect.  If `{option}` has `compiler_args` key, its string value would be passed to a compiler as a compiler argument.
 
 ## Canonical Type
 
-If you want to know a canonical type, set `g:clang_type_inspector#canonical_type` to `1` (Default is `0`).  If you want to know both canonical and non-canonical types, set `g:clang_type_inspector#canonical_type` to `2`.
+If you want to know only a canonical type, set `g:clang_type_inspector#canonical_type` to `2`.  If you want to know only a non-canonical type, set `g:clang_type_inspector#canonical_type` to `0`.  As default, this plugin shows both canonical type and non-canonical type when they are different.
 
-## Too Long Type Name Bothers You?
+## No Too Long Type Bothers You
 
-Too long type name sometimes bothers you (e.g. expression templates).  You can specify the max length of type name by `g:clang_type_inspector#type_name_length_limit` (Default is `0` and it means no limit).
+The type names which are too long to be shown in one-line (e.g. expression templates) would be shortened to output in one-line.  This is because multiline output to command line blocks vimmer's editting.  If you still want to whole long types in multiline output, set `g:clang_type_inspector#shorten_too_long_type_name` to `0`.
 
 ## License
 
