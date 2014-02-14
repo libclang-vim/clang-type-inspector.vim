@@ -1,8 +1,11 @@
+let s:save_cpo = &cpo
+set cpo&vim
+
 let g:clang_type_inspector#canonical_type = get(g:, 'clang_type_inspector#canonical_type', 0)
 let g:clang_type_inspector#automatic_inspection = get(g:, 'clang_type_inspector#automatic_inspection', 1)
 let g:clang_type_inspector#disable_balloon = get(g:, 'clang_type_inspector#disable_balloon', 0)
-let g:clang_type_inspector#compiler_args = get(g:, 'clang_type_inspector#compiler_args', '-std=c++1y')
 let g:clang_type_inspector#type_name_length_limit = get(g:, 'clang_type_inspector#type_name_length_limit', 0)
+let g:clang_type_inspector#default_compiler_args = get(g:, 'clang_type_inspector#default_compiler_args', '-std=c++1y')
 
 let s:prev_pos = []
 
@@ -15,13 +18,16 @@ function! s:prepare_temp_file(bufnr)
 endfunction
 
 function! clang_type_inspector#inspect_type_at(line, col, option)
+    let compiler_args = has_key(a:option, 'compiler_args') ?
+                            \ a:option.compiler_args :
+                            \ get(b:, 'clang_type_inspector_default_compiler_args', g:clang_type_inspector#default_compiler_args)
     if has_key(a:option, 'file')
-        let type_info = libclang#deduction#type_at(a:option.file, a:line, a:col, g:clang_type_inspector#compiler_args)
+        let type_info = libclang#deduction#type_at(a:option.file, a:line, a:col, compiler_args)
     else
         let bufnr = has_key(a:option, 'bufnr') ? a:option.bufnr : bufnr('%')
         let file_name = s:prepare_temp_file(bufnr)
         try
-            let type_info = libclang#deduction#type_at(file_name, a:line, a:col, g:clang_type_inspector#compiler_args)
+            let type_info = libclang#deduction#type_at(file_name, a:line, a:col, compiler_args)
         finally
             call delete(file_name)
         endtry
@@ -84,3 +90,6 @@ endfunction
 function! clang_type_inspector#balloon_expr()
     return clang_type_inspector#inspect_type_at(v:beval_lnum, v:beval_col, {'bufnr' : v:beval_bufnr})
 endfunction
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
