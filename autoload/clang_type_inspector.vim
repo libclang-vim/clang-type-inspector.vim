@@ -74,7 +74,7 @@ function! clang_type_inspector#inspect_type_if_auto()
 
     let name = clang_type_inspector#inspect_type_at(line('.'), col('.'), {})
 
-    if g:clang_type_inspector#shorten_too_long_type_name && len(name) > &column
+    if g:clang_type_inspector#shorten_too_long_type_name && len(name) > &columns
         let name = s:shorten_for_oneline_output(name)
     endif
 
@@ -94,7 +94,7 @@ endfunction
 function! clang_type_inspector#balloon_expr()
     let name = clang_type_inspector#inspect_type_at(v:beval_lnum, v:beval_col, {'bufnr' : v:beval_bufnr})
 
-    if g:clang_type_inspector#shorten_too_long_type_name && len(name) > &column
+    if g:clang_type_inspector#shorten_too_long_type_name && len(name) > &columns
         let name = s:shorten_for_oneline_output(name)
     endif
     return name
